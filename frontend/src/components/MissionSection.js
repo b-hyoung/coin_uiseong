@@ -2,7 +2,7 @@ import React from 'react';
 import MissionCard from './MissionCard';
 import './MissionSection.css';
 
-export default function MissionSection({ sectionTitle, missions }) {
+export default function MissionSection({ sectionTitle, missions  , oneTimeMission}) {
   return (
     <div className="mission-wrapper">
       <div className="mission-title-tab">
@@ -18,6 +18,7 @@ export default function MissionSection({ sectionTitle, missions }) {
               buttonText={m.buttonText}
             />
           ))}
+          {}
         </div>
       </div>
     </div>
