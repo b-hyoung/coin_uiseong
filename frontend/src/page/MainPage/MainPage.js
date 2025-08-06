@@ -70,7 +70,7 @@ export default function MainPage() {
     completed: dailyMissionStatus[m.id]
   }));
 
-   useEffect(() => {
+  useEffect(() => {
     const loginAndFetchUser = async () => {
       // 1) 구글 로그인 후 받은 id_token (테스트라 가짜 값)
       const idToken = 'test-google-id-token';
@@ -81,7 +81,28 @@ export default function MainPage() {
 
       // 3) 유저 정보 요청
       const user = await getUserInfo();
-      setUserInfo(user);
+
+      // 유저 기본 정보 설정
+      setUserInfo({
+        username: user.username,
+        lastLogin: user.lastLogin,
+        rank: user.rank,
+        point: user.point,
+        SVTPoint: user.SVTPoint,
+        monthlyEarned: user.monthlyEarned,
+        monthlyUsed: user.monthlyUsed,
+        totalExchanged: user.totalExchanged
+      });
+
+      // 일회성 미션 상태 설정
+      if (user.oneTimeMissionStatus) {
+        setOneTimeMissionStatus(user.oneTimeMissionStatus);
+      }
+
+      // 데일리 미션 상태 설정
+      if (user.dailyMissionStatus) {
+        setDailyMissionStatus(user.dailyMissionStatus);
+      }
     };
 
     loginAndFetchUser();

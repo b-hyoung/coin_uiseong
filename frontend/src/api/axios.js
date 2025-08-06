@@ -15,12 +15,3 @@ api.interceptors.request.use((config) => {
 
 export default api;
 
-export const getDailyMissions = async () => {
-  const res = await api.get('/user'); // /user 응답에 dailyMissionStatus 포함됨
-  return res.data.dailyMissionStatus;
-};
-
-export const getOneTimeMissions = async () => {
-  const res = await api.get('/user'); // /user 응답에 oneTimeMissionStatus 포함됨
-  return res.data.oneTimeMissionStatus;
-};
