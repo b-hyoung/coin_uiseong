@@ -1,40 +1,42 @@
-import {React,useState} from 'react';
+import {React,useState , useEffect} from 'react';
 import './MainPage.css';
 import ProfileCard from './components/ProfileCard';
 import MissionSection from './components/MissionSection';
 import Sidebar from './components/Sidebar'
+import { googleLogin } from '../../api/auth';
+import { getUserInfo } from '../../api/user';
 
 
 export default function MainPage() {
 
-
+    // 유저 정보
     const [userInfo, setUserInfo] = useState(
     {
-      username: "박형석", // 유저 이름
-      lastLogin: "2025-08-05", // 이전 마지막 로그인 시간
-      rank: "마늘", // 랭크 아직 고민중인 영역
-      point: 3000, // 미션을 통해 얻는 포인트
-      SVTPoint: 150, // 실제 의성시에서 사용할 가상화폐 포인트
-      monthlyEarned: 1000, // 이번달 포인트 적립 내역
-      monthlyUsed: 500, // 이번달 가상화폐포인트 사용 내역
-      totalExchanged: 5600, // 현재까지 누적된 가상화폐포인트 사용 내역
+      username : '', // 유저 이름
+      lastLogin : ' ', // 이전 마지막 로그인 시간
+      rank : ' ', // 랭크 아직 고민중인 영역
+      point: 0, // 미션을 통해 얻는 포인트
+      SVTPoint: 0, // 실제 의성시에서 사용할 가상화폐 포인트
+      monthlyEarned: 0, // 이번달 포인트 적립 내역
+      monthlyUsed: 0, // 이번달 가상화폐포인트 사용 내역
+      totalExchanged: 0 , // 현재까지 누적된 가상화폐포인트 사용 내역
     }
   )
   // 한번 인증하고 그 이후 인증안해두 되는 것들
   const [oneTimeMissionStatus, setOneTimeMissionStatus] = useState({
-    sns_share: false, // 인스타 인증 여부
-    survey: true // 설문조사 참여 여부
+    sns_share : true, // 인스타 인증 여부
+    survey : true // 설문조사 참여 여부
   });
 
   // 하루 한번씩 인증해줘야 하는 목록
   // 시간 00:00기준 초기화
   const [dailyMissionStatus, setDailyMissionStatus] = useState({
-    daily_quiz: false, // 데일리 퀴즈 미션 여부
-    mini_game: true // 데일리 미니게임 미션 여부
+    daily_quiz : true, // 데일리 퀴즈 미션 여부
+    mini_game : true // 데일리 미니게임 미션 여부
   });
 
 
-    const onlineMissions = [
+  const onlineMissions = [
     { title: '의성 장날', description: '의성 장날 웹에서 다양한 의성 농수산물을 구매 후 포인트 받기', buttonText: '의성 농수산 쇼핑가기' },
   ];
 
@@ -67,6 +69,23 @@ export default function MainPage() {
     ...m,
     completed: dailyMissionStatus[m.id]
   }));
+
+   useEffect(() => {
+    const loginAndFetchUser = async () => {
+      // 1) 구글 로그인 후 받은 id_token (테스트라 가짜 값)
+      const idToken = 'test-google-id-token';
+
+      // 2) 토큰 발급 요청
+      const { accessToken } = await googleLogin(idToken);
+      localStorage.setItem('accessToken', accessToken);
+
+      // 3) 유저 정보 요청
+      const user = await getUserInfo();
+      setUserInfo(user);
+    };
+
+    loginAndFetchUser();
+  }, []);
 
   return (
     <div className="main-layout">
