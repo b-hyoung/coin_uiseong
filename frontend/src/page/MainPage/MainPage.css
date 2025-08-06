@@ -106,7 +106,8 @@
 
 .profile-rank {
   font-size: 1rem;
-  color: #777;
+  color: #e35d28;
+  width: max-content;
 }
 
 .profile-last-login {

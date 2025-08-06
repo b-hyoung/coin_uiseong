@@ -15,7 +15,7 @@ export default function ProfileCard({
           </div>
           <div className="profile-user-info">
             <div className="profile-name">{username}</div>
-            <div className="profile-rank">{rank}</div>
+           <div className="profile-rank">{rank}</div>
           </div>
         </div>
         <div className="profile-last-login">
