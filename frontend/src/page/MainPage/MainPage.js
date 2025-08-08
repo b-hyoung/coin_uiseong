@@ -72,36 +72,72 @@ export default function MainPage() {
 
   useEffect(() => {
     const loginAndFetchUser = async () => {
-      // 1) 구글 로그인 후 받은 id_token (테스트라 가짜 값)
-      const idToken = 'test-google-id-token';
+      try {
+        // 1) 이미 저장된 토큰 불러오기
+        const raw = localStorage.getItem('wepin_token');
+        const storedToken = raw ? JSON.parse(raw)?.idToken : null;
 
-      // 2) 토큰 발급 요청
-      const { accessToken } = await googleLogin(idToken);
-      localStorage.setItem('accessToken', accessToken);
 
-      // 3) 유저 정보 요청
-      const user = await getUserInfo();
+        if (!storedToken) {
+          console.error('❌ id_token이 존재하지 않습니다.');
+          return;
+        }
 
-      // 유저 기본 정보 설정
-      setUserInfo({
-        username: user.username,
-        lastLogin: user.lastLogin,
-        rank: user.rank,
-        point: user.point,
-        SVTPoint: user.SVTPoint,
-        monthlyEarned: user.monthlyEarned,
-        monthlyUsed: user.monthlyUsed,
-        totalExchanged: user.totalExchanged
-      });
+        // 2) accessToken이 없다면 로그인 요청
+        const accessToken = localStorage.getItem('accessToken');
+        if (!accessToken) {
+          const response = await googleLogin(storedToken);
+          localStorage.setItem('accessToken', response.accessToken);
+          console.log("✅ accessToken 발급 및 저장 완료");
+        }
+        // Extract userId from Wepin or use mock address for development
+        let userId = localStorage.getItem('userId');
+        if (!userId) {
+          if (window.wepin && typeof window.wepin.getAccount === 'function') {
+            const account = await window.wepin.getAccount();
+            userId = account.address;
+            console.log("✅ wepin 계정 정보로부터 userId 설정 완료:", userId);
+          } else {
+            // 개발 환경용 mock address
+            userId = '0xabc123';
+            console.warn("🟡 wepin이 없어서 mock userId를 사용합니다:", userId);
+          }
+          localStorage.setItem('userId', userId);
+        }
+        // 3) 유저 정보 요청
+        const userIdFinal = userId;
 
-      // 일회성 미션 상태 설정
-      if (user.oneTimeMissionStatus) {
-        setOneTimeMissionStatus(user.oneTimeMissionStatus);
-      }
+        console.log("📬 x-user-address:", userIdFinal);
 
-      // 데일리 미션 상태 설정
-      if (user.dailyMissionStatus) {
-        setDailyMissionStatus(user.dailyMissionStatus);
+        const user = await getUserInfo(userIdFinal);
+        console.log("🧪 getUserInfo 응답 원본:", JSON.stringify(user, null, 2));
+
+        if (!user) {
+          throw new Error("유저 정보가 undefined 또는 null입니다.");
+        }
+
+        console.log("✅ 유저 정보 응답:", user);
+
+        setUserInfo({
+          username: user.username || '알 수 없음',
+          lastLogin: user.lastLogin || '-',
+          rank: user.rank || '-',
+          point: user.point || 0,
+          SVTPoint: user.SVTPoint || 0,
+          monthlyEarned: user.monthlyEarned || 0,
+          monthlyUsed: user.monthlyUsed || 0,
+          totalExchanged: user.totalExchanged || 0
+        });
+
+        if (user.oneTimeMissionStatus) {
+          setOneTimeMissionStatus(user.oneTimeMissionStatus);
+        }
+
+        if (user.dailyMissionStatus) {
+          setDailyMissionStatus(user.dailyMissionStatus);
+        }
+      } catch (error) {
+        console.error("🚨 로그인 또는 유저정보 요청 실패:", error);
       }
     };
 

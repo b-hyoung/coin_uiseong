@@ -1,70 +1,125 @@
-# Getting Started with Create React App
+# 의성코인 기획정리
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## **📌 프로젝트 개요**
 
-## Available Scripts
+**프로젝트명:** 의성시 전용 디지털 포인트 결제 + 블록체인 정산 시스템
 
-In the project directory, you can run:
+**목표:** 의성시 방문객과 주민이 지역 내에서만 사용할 수 있는 디지털 포인트를 지급·사용하게 하여, 지역 경제 활성화 및 예산 집행 투명성 확보
 
-### `npm start`
+---
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## **1. 배경 및 필요성**
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+- 기존 지역화폐의 한계:
+    - 실물 카드·종이 상품권 관리 번거로움
+    - 부정 사용 및 예산 누수 가능성
+- 블록체인을 통한 **투명한 거래 기록**과 **실시간 정산** 필요
+- 의성 방문객 유입 및 지역 내 소비 촉진
 
-### `npm test`
+---
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## **2. 서비스 개념**
 
-### `npm run build`
+- **포인트 적립**: 관광·이벤트·가맹점 이용 시 포인트 지급
+- **포인트 결제**: QR 스캔 후 포인트 차감, 가맹점에는 스테이블코인 지급
+- **블록체인 정산**: 가맹점 환전 시 블록체인에 거래 기록 저장 → 예산 집행 투명성 확보
+- **지역 제한**: GPS + 가맹점 인증으로 의성시 내에서만 사용 가능
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+---
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## **3. 주요 기능**
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### **사용자**
 
-### `npm run eject`
+- 포인트 적립
+    - 데일리미션 ,설문조사 , 홍보 , 의성장날 앱을 통한 구매 시 일부 포인트 적립
+    - 지역 체험프로그램 참여 , 관광지 , 지역축제 QR인증 을 통한 적립
+- QR 코드 결제
+- 잔액·거래내역 조회
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+### **가맹점**
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+- QR 코드 발급 및 결제 수락
+- 포인트 → 스테이블코인 정산
+- 환전 신청
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+### **관리자(운영사/시청)**
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+- 포인트 발행·지급 내역 관리
+- 가맹점 승인 및 관리
+- 블록체인 거래 기록 조회
 
-## Learn More
+---
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## **4. 기술 구조**
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+**하이브리드 방식**
 
-### Code Splitting
+- **오프체인**: 포인트 관리(속도·비용 절감), GPS·가맹점 제한
+- **온체인**: 가맹점 정산 기록, 예산 집행 투명성 확보
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+**구성 요소**
 
-### Analyzing the Bundle Size
+- 모바일 웹(사용자/가맹점)
+- 포인트 서버(DB)
+- Wepin 지갑 API
+- 스테이블코인(전송 제한 스마트컨트랙트 적용 가능)
+- 블록체인 네트워크(퍼블릭 저가 체인 or 프라이빗)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+---
 
-### Making a Progressive Web App
+## **5. 운영 흐름**
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+1. **포인트 지급**
+    - 이벤트, 미션, 결제 시 포인트 적립 (서버 DB 저장)
+2. **결제 요청**
+    - 사용자 → 가맹점 QR 스캔 → GPS+가맹점 검증
+3. **결제 승인 및 정산**
+    - 서버에서 포인트 차감
+    - 운영사 지갑 → 가맹점 지갑으로 스테이블코인 전송 (블록체인 기록)
+4. **가맹점 환전**
+    - 가맹점이 현금 환전 신청 → 운영사·시청 승인 후 지급
 
-### Advanced Configuration
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+## **6. 장점**
 
-### Deployment
+- **예산 통제 용이**: 포인트 지급/소멸 정책으로 예산 유출 방지
+- **부정 사용 방지**: GPS + 가맹점 인증
+- **투명성**: 블록체인 거래 기록 공개
+- **UX 개선**: 사용자는 포인트만 보유, 결제는 즉시 승인
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+---
 
-### `npm run build` fails to minify
+## **7. 예산 절감/리스크 관리**
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+- 전환형(포인트→코인) 대신 결제 시에만 스테이블코인 전송 → 송금 리스크 0
+- 소멸성 포인트 정책으로 미사용 예산 회수
+- 월별/분기별 지급 풀 제한으로 지출 속도 조절
+
+---
+
+## **8. 홍보·마케팅 전략**
+
+- 지역 축제·이벤트와 결합 (참여 시 포인트 지급)
+- 관광 코스 스탬프 투어(방문 인증 시 보상)
+- SNS 인증 이벤트(사진+해시태그 보상)
+- 인근 도시 셔틀버스+포인트 패키지
+
+---
+
+## **9. 향후 확장**
+
+- 타 지자체 연계 확장
+- 지역 특산물 온라인몰 결제 적용
+- NFT 기념품, 멤버십 등 블록체인 부가 서비스 연계
+
+---
+
+📌 **핵심 한 줄 요약:**
+
+> “사용자는 포인트만 보유, 결제 시에만 블록체인 전송” 구조로,
+> 
+
+> 예산 유출을 막고, 의성시 내에서만 사용 가능한 디지털 포인트 결제 시스템.
+>

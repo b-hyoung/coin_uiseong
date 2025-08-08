@@ -7,16 +7,30 @@
     "@testing-library/jest-dom": "^6.6.4",
     "@testing-library/react": "^16.3.0",
     "@testing-library/user-event": "^13.5.0",
+    "@wepin/login-js": "^0.0.35",
+    "@wepin/pin-js": "^0.0.35",
+    "@wepin/wagmi-connector": "^2.0.0",
+    "assert": "^2.1.0",
+    "axios": "^1.4.0",
+    "buffer": "^6.0.3",
+    "crypto-browserify": "^3.12.1",
+    "msw": "^1.2.1",
+    "process": "^0.11.10",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
-    "react-router-dom": "^7.7.1",
+    "react-router-dom": "^6.15.0",
     "react-scripts": "5.0.1",
+    "stream-browserify": "^3.0.0",
+    "util": "^0.12.5",
+    "viem": "^2.33.3",
+    "vm-browserify": "^1.1.2",
+    "wagmi": "^2.16.1",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
+    "start": "react-app-rewired start",
+    "build": "react-app-rewired build",
+    "test": "react-app-rewired test",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
@@ -38,11 +52,12 @@
     ]
   },
   "devDependencies": {
-    "msw": "^2.10.4"
+    "customize-cra": "^1.0.0",
+    "react-app-rewired": "^2.2.1",
+    "source-map-loader": "^5.0.0",
+    "typescript": "^5.0.4"
   },
   "msw": {
-    "workerDirectory": [
-      "public"
-    ]
+    "workerDirectory": "public"
   }
 }

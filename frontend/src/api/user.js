@@ -1,7 +1,7 @@
 import api from './axios';
 
-export const getUserInfo = async () => {
-  const res = await api.get('/user');
+export const getUserInfo = async (config = {}) => {
+  const res = await api.get('/user', config);
   return res.data; // userInfo + oneTimeMissionStatus + dailyMissionStatus
 };
 
