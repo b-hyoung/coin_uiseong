@@ -1,4 +1,4 @@
-import api from './axios';
+import api from './axios.js';
 
 export const getUserInfo = async (config = {}) => {
   const res = await api.get('/user', config);

@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: '/mock', // MSW에서는 절대경로 /api 로 요청하면 handler.js와 매칭
+  baseURL: 'http://localhost:5050', // ✅ 포트 변경
 });
 
 // 요청 시 토큰 자동 포함 (있을 경우)
