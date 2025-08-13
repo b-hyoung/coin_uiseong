@@ -54,10 +54,12 @@
     ]
   },
   "devDependencies": {
+    "ajv": "^8.17.1",
+    "ajv-keywords": "^5.1.0",
     "customize-cra": "^1.0.0",
     "react-app-rewired": "^2.2.1",
     "source-map-loader": "^5.0.0",
-    "typescript": "^5.0.4"
+    "typescript": "^5.9.2"
   },
   "msw": {
     "workerDirectory": "public"
