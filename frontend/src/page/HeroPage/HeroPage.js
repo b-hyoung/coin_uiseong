@@ -17,7 +17,7 @@ function HeroPage() {
   const [theme, setTheme] = useState('mint'); // 'forest' | 'garlic' | 'sunrise' | 'mint'
   const [layout, setLayout] = useState('zigzag'); // 'grid' | 'zigzag' | 'rows'
 
-
+  const imageurl = process.env.PUBLIC_URL+'/assets/images/'
 
 
   // const handleClickLog = async () => {
@@ -267,7 +267,7 @@ function HeroPage() {
           <div className="grid-3">
             <div className="card">
               <div className="media">
-                <img src="/assets/preview/heritage.jpg" alt="의성 고즈넉한 한옥 관광지"/>
+                <img src={process.env.PUBLIC_URL + '/assets/images/uiseong_hanoke.jpg'} alt="의성 고즈넉한 한옥 관광지"/>
               </div>
               <div className="body">
                 <div className="title">문화유산 인증</div>
@@ -277,17 +277,17 @@ function HeroPage() {
             </div>
             <div className="card">
               <div className="media">
-                <img src="/assets/preview/pottery.jpg" alt="도자기 만들기 체험"/>
+                <img src={process.env.PUBLIC_URL + '/assets/images/uiseong_mak.jpeg'} alt="도자기 만들기 체험"/>
               </div>
               <div className="body">
-                <div className="title">도자기 만들기</div>
+                <div className="title">막걸리 만들기</div>
                 <div className="desc">체험 미션 완료하고 보너스 포인트!</div>
                 <span className="badge">+300P</span>
               </div>
             </div>
             <div className="card">
               <div className="media">
-                <img src="/assets/preview/farm.jpg" alt="농장 체험"/>
+                <img src={process.env.PUBLIC_URL + "/assets/images/uiseong_jadu.jpg"} alt="농장 체험"/>
               </div>
               <div className="body">
                 <div className="title">농장 수확 체험</div>
@@ -306,20 +306,20 @@ function HeroPage() {
           <p className="section-sub">카페·식당·기념품·체험비 등 지역 곳곳에서 결제 시 포인트가 먼저 차감됩니다.</p>
           <div className="grid-4">
             <div className="card">
-              <div className="media"><img src="/assets/usage/cafe.jpg" alt="카페 아이스라떼"/></div>
+              <div className="media"><img src={process.env.PUBLIC_URL + "/assets/images/uiseong_cafe.jpeg"} alt="카페 아이스라떼"/></div>
               <div className="body"><div className="title">카페</div><div className="desc">라떼 한 잔도 포인트로.</div></div>
             </div>
             <div className="card">
-              <div className="media"><img src="/assets/usage/restaurant.jpg" alt="지역 음식점"/></div>
+              <div className="media"><img src={process.env.PUBLIC_URL + "/assets/images/uiseong_sikdang.jpeg"} alt="지역 음식점"/></div>
               <div className="body"><div className="title">식당</div><div className="desc">의성 맛집에서 든든하게.</div></div>
             </div>
             <div className="card">
-              <div className="media"><img src="/assets/usage/giftshop.jpg" alt="기념품 상점"/></div>
+              <div className="media"><img src={process.env.PUBLIC_URL + "/assets/images/uiseong_gz.jpg"} alt="기념품 상점"/></div>
               <div className="body"><div className="title">기념품</div><div className="desc">한정 굿즈도 가능!</div></div>
             </div>
             <div className="card">
-              <div className="media"><img src="/assets/usage/experience.jpg" alt="공방 체험"/></div>
-              <div className="body"><div className="title">체험비</div><div className="desc">공방·농장·축제 입장 등.</div></div>
+              <div className="media"><img src={process.env.PUBLIC_URL + "/assets/images/uiseong_model.jpeg"} alt="공방 체험"/></div>
+              <div className="body"><div className="title">체험비</div><div className="desc">다양한 체험프로그램 참여</div></div>
             </div>
           </div>
         </div>
@@ -332,9 +332,9 @@ function HeroPage() {
           <p className="section-sub">실제 참가자들의 사진과 한 줄 후기</p>
           <div className="grid-3">
             <div className="card">
-              <div className="media"><img src="/assets/review/rev1.jpg" alt="가족 체험 사진"/></div>
+              <div className="media"><img src={imageurl+"uiseong_cafe.jpeg"} alt="가족 체험 사진"/></div>
               <div className="body testimonial">
-                <div className="avatar"><img src="/assets/review/ava1.jpg" alt="프로필"/></div>
+                <div className="avatar"><img src={imageurl+"uiseong_cafe.jpeg"} alt="프로필"/></div>
                 <div className="content">
                   <div className="handle">@hana_traveler</div>
                   <div className="desc">포인트로 카페까지! 하루가 진짜 알찼어요 😊</div>
@@ -342,22 +342,22 @@ function HeroPage() {
               </div>
             </div>
             <div className="card">
-              <div className="media"><img src="/assets/review/rev2.jpg" alt="축제 사진"/></div>
+              <div className="media"><img src={imageurl + "uiseong_cj.jpg"} alt="축제 사진"/></div>
               <div className="body testimonial">
-                <div className="avatar"><img src="/assets/review/ava2.jpg" alt="프로필"/></div>
+                <div className="avatar"><img src={imageurl+"uiseong_jadu.jpg"} alt="프로필"/></div>
                 <div className="content">
                   <div className="handle">@weekend_family</div>
-                  <div className="desc">아이들이 미션 찾기 놀이에 푹 빠졌어요!</div>
+                  <div className="desc">아이들이 놀거리가 많아서 좋았어요</div>
                 </div>
               </div>
             </div>
             <div className="card">
-              <div className="media"><img src="/assets/review/rev3.jpg" alt="공방 체험 사진"/></div>
+              <div className="media"><img src={imageurl+"uiseong_mak.jpeg"} alt="공방 체험 사진"/></div>
               <div className="body testimonial">
-                <div className="avatar"><img src="/assets/review/ava3.jpg" alt="프로필"/></div>
+                <div className="avatar"><img src={imageurl+"uiseong_gz.jpg"} alt="프로필"/></div>
                 <div className="content">
                   <div className="handle">@local_lover</div>
-                  <div className="desc">지역 상점도 알게 되고, 다음에 또 올 거예요.</div>
+                  <div className="desc">막걸리체험이 너무재미있네요<br/>다른 체험프로그램도 즐겨봐야겟어요 !</div>
                 </div>
               </div>
             </div>
