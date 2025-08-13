@@ -1,0 +1,19 @@
+
+.mission-card {
+  position: relative;
+  width: 200px;
+  height: 250px;
+  background-color: #ffffff;
+  border-radius: 10px;
+  padding: 15px;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.12);
+  text-align: center;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.mission-card-button-fixed {
+  position: absolute;
+  bottom: 15px; /* 카드 하단 여백 */
+  left: 50%;
+  transform: translateX(-50%);
+  width: max-content;;
+}
