@@ -9,6 +9,7 @@ import QuestProgressItem from './components/QuestProgressItem'
 const App = () => {
     const [selectedRoute, setSelectedRoute] = useState(null);
     const [isQuestStarted, setIsQuestStarted] = useState(false);
+    const [selectedProgram, setSelectedProgram] = useState(null); // {title, distance, duration, location, iconPath}
     const baseImgUrl = process.env.PUBLIC_URL+'/assets/images/'
 
     const tourismRoutes = [
@@ -75,11 +76,37 @@ const App = () => {
         setSelectedRoute(null);
     };
 
+    const handleAddProgram = (program) => {
+        if (selectedProgram) return; // 이미 하나 선택됨: 삭제 후 다른 것 선택 가능
+        setSelectedProgram(program);
+    };
+
+    const handleRemoveProgram = () => {
+        setSelectedProgram(null);
+    };
+
     return (
-        <div className="main-container">
+        <div
+            className="main-container"
+            style={{
+                backgroundImage: `url(${process.env.PUBLIC_URL}/assets/images/hero_sky_fields.jpg)`,
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+                backgroundRepeat: 'no-repeat',
+                minHeight: '100vh'
+            }}
+        >
             {/* Header */}
             <header className="header">
-                <h1 className="logo">의성 여행</h1>
+                <div className="logo-section">
+                  <div className="logo-icon">
+                    <img src={process.env.PUBLIC_URL+'/assets/images/uiseong_bi_ssal.png'} />
+                  </div>
+                  <div className="logo-texts">
+                    <div className="logo-text-main">의성에 오면?</div>
+                    <div className="logo-text-sub">여행이 게임이 되는 곳</div>
+                  </div>
+                </div>
                 <div className="header-icons">
                     <div className="icon-wrapper">
                         {/* Notification Bell Icon */}
@@ -166,32 +193,48 @@ const App = () => {
                                         <>
                                             <div className="section-header">
                                                 <h3>체험 프로그램 추가하기</h3>
-                                            <button
-                                                onClick={handleBack}
-                                                style={{
-                                                    color: 'red',
-                                                    padding: '10px 20px',
-                                                    border: '1px solid red',
-                                                    borderRadius: '5px',
-                                                    backgroundColor: 'transparent'
-                                                }}
-                                            >
-                                                ← 퀘스트 포기하기
-                                            </button>
+                                                <button
+                                                    onClick={handleBack}
+                                                    style={{
+                                                        color: 'red',
+                                                        padding: '10px 20px',
+                                                        border: '1px solid red',
+                                                        borderRadius: '5px',
+                                                        backgroundColor: 'transparent'
+                                                    }}
+                                                >
+                                                    ← 퀘스트 포기하기
+                                                </button>
                                             </div>
                                             <div className="mission-grid">
-                                                {experiencePrograms.map((program, index) => (
-                                                    <MissionCard 
-                                                        key={index}
-                                                        title={program.title}
-                                                        description={`${program.title}에 참여해 보세요!`}
-                                                        iconBgClass="icon-circle green"
-                                                        iconPath={program.iconPath}
-                                                        distance={program.distance}
-                                                        duration={program.duration}
-                                                        location={program.location}
-                                                    />
-                                                ))}
+                                                {experiencePrograms.map((program, index) => {
+                                                    const isDisabled = !!selectedProgram && selectedProgram.title !== program.title;
+                                                    const isSelected = !!selectedProgram && selectedProgram.title === program.title;
+                                                    return (
+                                                        <div
+                                                            key={index}
+                                                            onClick={() => { if (!selectedProgram) handleAddProgram(program); }}
+                                                            style={{
+                                                                position: 'relative',
+                                                                opacity: isDisabled ? 0.5 : 1,
+                                                                pointerEvents: isDisabled ? 'none' : 'auto'
+                                                            }}
+                                                        >
+                                                            <MissionCard 
+                                                                title={program.title}
+                                                                description={`${program.title}에 참여해 보세요!`}
+                                                                iconBgClass="icon-circle green"
+                                                                iconPath={program.iconPath}
+                                                                distance={program.distance}
+                                                                duration={program.duration}
+                                                                location={program.location}
+                                                            />
+                                                            {isSelected && (
+                                                                <div className="selected-badge">선택됨</div>
+                                                            )}
+                                                        </div>
+                                                    );
+                                                })}
                                             </div>
                                         </>
                                     );
@@ -211,23 +254,23 @@ const App = () => {
                                     <MissionCard 
                                         title="데일리 퀴즈" 
                                         description="오늘의 퀴즈에 도전하고 포인트를 받으세요!" 
-                                        iconBgClass="icon-circle yellow" 
-                                        iconPath="M8.228 9.228a1.5 1.5 0 012.121 0l4.243 4.243a1.5 1.5 0 010 2.121l-4.243 4.243a1.5 1.5 0 01-2.121 0l-4.243-4.243a1.5 1.5 0 010-2.121L8.228 9.228z" 
+                                        iconBgClass="icon-circle blue" 
+                                        iconPath={process.env.PUBLIC_URL+'/assets/images/uiseong_bi_ssal.png'}
                                         footerText="08:56:30"
-                                    />
+                                        />
                                     {/* SNS Promotion Card */}
                                     <MissionCard 
                                         title="SNS 홍보" 
                                         description="의성 여행을 친구에게 공유하고 포인트를 얻으세요!" 
                                         iconBgClass="icon-circle blue" 
-                                        iconPath="M4 16h16M4 8h16m-5 8v2a2 2 0 01-2 2h-4a2 2 0 01-2-2v-2m0-8h16"
-                                    />
+                                        iconPath={process.env.PUBLIC_URL+'/assets/images/uiseong_bi_manl.png'}
+                                        />
                                     {/* Survey Card */}
                                     <MissionCard 
                                         title="설문조사" 
                                         description="간단한 설문에 참여하고 추가 포인트를 받으세요!" 
-                                        iconBgClass="icon-circle purple" 
-                                        iconPath="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9v2m-3-3h6M13 5v2m-3-3h6"
+                                        iconBgClass="icon-circle blue" 
+                                        iconPath={process.env.PUBLIC_URL+'/assets/images/uiseong_gochu.png'}
                                     />
                                 </div>
                             </section>
@@ -288,6 +331,18 @@ const App = () => {
                                 </>
                             )}
                         </ul>
+                        {/* Selected Experience Program (only one) */}
+                        {selectedProgram ? (
+                            <div className="selected-program">
+                                <div className="sp-info">
+                                    <strong>{selectedProgram.title}</strong>
+                                    <div className="sp-meta">{selectedProgram.location} · {selectedProgram.distance}km · {selectedProgram.duration}분</div>
+                                </div>
+                                <button className="sp-remove" onClick={handleRemoveProgram}>삭제</button>
+                            </div>
+                        ) : (
+                            <div className="selected-program empty">체험 프로그램을 1개 선택해 추가하세요.</div>
+                        )}
                     </section>
                     
                 </div>
