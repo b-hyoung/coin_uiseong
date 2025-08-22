@@ -83,3 +83,5 @@ jspm_packages/
 # OS
 .DS_Store
 Thumbs.db 
+/upstream-repo
+upstream-repo
