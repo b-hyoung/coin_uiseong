@@ -854,14 +854,25 @@ html, body, #root, .App, .main-container, .page-root, .app-container {
 }
 .route-media{
   position: relative;
+  width: 100%;
   aspect-ratio: 16 / 9;
   border-radius: 14px;
   overflow: hidden;
   background:#000;
 }
 .route-media img{
-  width:100%; height:100%; object-fit: cover; display:block;
+  width:100%;
+  height:100%;
+  object-fit: cover;
+  display:block;
+  border:0;
   transform: translateZ(0);
+}
+.route-media iframe{
+  width:100%;
+  height:100%;
+  display:block;
+  border:0;
 }
 .route-info{ display:flex; flex-direction:column; gap:8px; }
 .route-kicker{
@@ -972,3 +983,140 @@ html, body, #root, .App, .main-container, .page-root, .app-container {
 }
 .video-frame{ position: relative; width: 100%; aspect-ratio: 16 / 9; }
 .video-frame iframe{ position:absolute; inset:0; width:100%; height:100%; border:0; display:block; }
+
+/* === Inline detail inside route-row === */
+.route-row.expanded{ padding-bottom: 0; }
+.route-row .route-detail.inline{
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px solid var(--ink);
+  background: transparent;
+  padding-bottom: 0;
+}
+.route-row .route-detail.inline .route-detail__inner{ max-width: none; }
+.route-row .route-detail.inline .rd-list{ border-top: 0; }
+.route-row .route-detail.inline .rd-list li{
+  padding: 10px 0;
+  border-bottom: 1px solid var(--ink);
+}
+.route-row .route-detail.inline .rd-list li:last-child{
+  border-bottom: 0;
+  padding-bottom: 0;
+}
+
+/* === Contained detail: separate block, border continues from row === */
+.route-row.expanded{
+  border-bottom-color: transparent; /* avoid double border with contained detail */
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+.route-detail.contained{
+  max-width: 1080px;
+  margin: -12px auto 0; /* pull up to visually attach to the row */
+  padding: 14px 16px 0;
+  border-left: 1px solid var(--bdr, #eaeaea);
+  border-right: 1px solid var(--bdr, #eaeaea);
+  border-bottom: 1px solid var(--bdr, #eaeaea);
+  border-bottom-left-radius: 18px;
+  border-bottom-right-radius: 18px;
+  background: transparent; /* only the border "comes down" */
+}
+/* remove internal top border and tighten list spacing for contained view */
+.route-detail.contained .route-detail__inner{ max-width: 980px; margin: 0 auto; }
+.route-detail.contained .rd-list{ border-top: 0; }
+.route-detail.contained .rd-list li{ padding: 10px 0; }
+/* === Detail two-column layout (Reel left, List right) === */
+.route-detail__grid{
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+  align-items: start;
+}
+.detail-media{
+  width: 100%;
+  height: 800px;
+  aspect-ratio: 16 / 9; /* match row media size */
+  border-radius: 14px;
+  overflow: hidden;
+  background: #000;
+}
+.detail-media iframe,
+.detail-media img{
+  width: 100%;
+  height: 100%;
+  display: block;
+  border: 0;
+  object-fit: cover;
+}
+.detail-body{ width: 100%; }
+@media (min-width: 900px){
+  .route-detail__grid{
+    grid-template-columns: 520px 1fr; /* larger media in detail view */
+  }
+}
+/* cap media height: keep main cards modest, enlarge detail reels */
+.route-media{ max-height: 260px; }
+.detail-media{ max-height: 700px; }
+@media (max-width: 480px){
+  .route-media{ max-height: 220px; }
+  .detail-media{ max-height: 300px; }
+}
+/* === Content tabs === */
+.content-tabs{
+  display:flex; gap:8px; margin-top:6px; flex-wrap:wrap;
+}
+.content-tabs .tab-btn{
+  padding:12px 18px;
+  border:2px solid var(--bdr, #e5e7eb);
+  border-radius:999px;
+  background:#fff;
+  font-weight:900;
+  font-size:16px;
+  cursor:pointer;
+  letter-spacing:.02em;
+}
+.landing-root.theme-neon .content-tabs .tab-btn,
+.landing-root.theme-ocean .content-tabs .tab-btn,
+.landing-root.theme-retro .content-tabs .tab-btn{
+  background: rgba(255,255,255,.06);
+  color: var(--text);
+  border:1px solid var(--bdr);
+}
+.content-tabs .tab-btn.on{
+  background:#111; 
+  color:#fff; 
+  border-color:#111;
+  box-shadow: 0 8px 22px rgba(0,0,0,.22);
+  transform: translateY(-1px);
+}
+/* Header spacing with big tabs + carousel */
+.landing-section__head + .route-carousel-viewport{
+  margin-top: 10px;
+}
+.landing-root.theme-neon .content-tabs .tab-btn.on{
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  border:none;
+}
+
+/* === Route card media (embed moved from hero strip) === */
+.route-card__media{
+  width: 100%;
+  aspect-ratio: 9 / 16; /* Reel 기본 비율 */
+  border-radius: 12px;
+  overflow: hidden;
+  background: #000;
+  margin-bottom: 12px;
+  box-shadow: 0 8px 22px rgba(0,0,0,.18);
+}
+.route-card__media iframe,
+.route-card__media img{
+  width: 100%;
+  height: 100%;
+  display: block;
+  border: 0;
+  object-fit: cover;
+}
+@media (min-width: 900px){
+  /* 데스크톱에선 카드 폭 대비 비율을 약간 낮춰 과도한 세로감을 줄임 */
+  .route-card__media{ aspect-ratio: 16 / 10; }
+}

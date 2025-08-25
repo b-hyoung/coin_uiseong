@@ -56,7 +56,7 @@ const DEFAULT_TOURISM_ROUTES = [
 
 ];
 
-function HeroPageB({ tourismRoutes = DEFAULT_TOURISM_ROUTES, onSelectRoute, instagramReels = [], youtubeMap = {} }) {
+function HeroPageB({ tourismRoutes = DEFAULT_TOURISM_ROUTES, experiences = [], places = [], onSelectRoute, instagramReels = [], youtubeMap = {}, instagramByType = { route:{}, exp:{}, place:{} } }) {
   const [theme, setTheme] = useState('neon'); // 'default' | 'modern' | 'neon' | 'pastel' | 'ocean' | 'retro'
 
   // Single YouTube embed state and handlers
@@ -71,6 +71,55 @@ function HeroPageB({ tourismRoutes = DEFAULT_TOURISM_ROUTES, onSelectRoute, inst
   const closeVideo = () => {
     setYtOpen(false);
     setYtId('');
+  };
+  // Content tabs: route | exp | place
+  const [tab, setTab] = useState('route');
+  const [openDetailType, setOpenDetailType] = useState(null);
+  const [openDetailId, setOpenDetailId] = useState(null);
+
+  // --- Instagram helpers ---
+  const getFirstReel = (type, id) => {
+    if (instagramByType && instagramByType[type] && instagramByType[type][id] && instagramByType[type][id].length > 0) {
+      return instagramByType[type][id][0];
+    }
+    // backward-compat: try to find by substring in instagramReels
+    if (type === 'route') {
+      const hit = (instagramReels || []).find((url) => typeof url === 'string' && url.includes(id));
+      return hit || null;
+    }
+    return null;
+  };
+  const getReelsForTab = () => {
+    const list = [];
+    if (tab === 'route') {
+      // collect first reel per visible route
+      tourismRoutes.forEach((r) => {
+        const u = getFirstReel('route', r.id);
+        if (u) list.push(u);
+      });
+    } else if (tab === 'exp') {
+      (experiences || []).forEach((e) => {
+        const arr = instagramByType?.exp?.[e.id];
+        if (arr && arr.length) list.push(arr[0]);
+      });
+    } else if (tab === 'place') {
+      (places || []).forEach((p) => {
+        const arr = instagramByType?.place?.[p.id];
+        if (arr && arr.length) list.push(arr[0]);
+      });
+    }
+    // fallback: if nothing collected, show the legacy strip
+    if (list.length === 0 && instagramReels?.length) return instagramReels;
+    return list;
+  };
+
+  const goDetail = (type, id) => {
+    setOpenDetailType(type);
+    setOpenDetailId(id);
+    setTimeout(() => {
+      const el = document.getElementById(`detail-${type}-${id}`);
+      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 0);
   };
 
   return (
@@ -92,90 +141,270 @@ function HeroPageB({ tourismRoutes = DEFAULT_TOURISM_ROUTES, onSelectRoute, inst
           <div className="landing-cta">
             <a className="btn primary" href="#routes">추천 루트 보기</a>
           </div>
-          {instagramReels?.length > 0 && (
-            <div className="reels-strip" aria-label="인스타 릴스 미리보기">
-              {instagramReels.map((url, i) => (
-                <div className="reel-embed" key={`reel-${i}`}>
-                  <iframe
-                    src={`${url.replace(/\/$/, '')}/embed`}
-                    title={`Instagram Reel ${i+1}`}
-                    allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
-                    allowFullScreen
-                    loading="lazy"
-                  ></iframe>
-                </div>
-              ))}
-            </div>
-          )}
         </div>
       </section>
 
-      {/* 추천 루트 — 보기 전용 (Row List) */}
+      {/* 추천 루트/체험/카페·식당 — 보기 전용 (Row List, Tabbed) */}
       <section id="routes" className="landing-section">
         <div className="landing-section__head">
-          <h2>추천 키워드</h2>
-          <p>계절 / 행사별 다양한 키워드를 확인하고 여행에 참고하세요</p>
+          <h2>
+            {tab==='route' && '추천 루트 — 보기 전용'}
+            {tab==='exp' && '체험 프로그램 — 보기 전용'}
+            {tab==='place' && '카페 · 식당 — 보기 전용'}
+          </h2>
+          <div className="content-tabs">
+            <button type="button" className={`tab-btn ${tab==='route'?'on':''}`} onClick={()=>setTab('route')}>루트</button>
+            <button type="button" className={`tab-btn ${tab==='exp'?'on':''}`} onClick={()=>setTab('exp')}>체험</button>
+            <button type="button" className={`tab-btn ${tab==='place'?'on':''}`} onClick={()=>setTab('place')}>카페·식당</button>
+          </div>
         </div>
 
         <div className="routes-list">
-          {tourismRoutes.map((r, i) => (
-            <article key={`row-${r.id}`} className={`route-row ${i % 2 === 1 ? 'alt' : 'alt'}`}>
-              <figure className="route-media">
-                <img
-                  src={`${process.env.PUBLIC_URL || ''}/assets/images/${r.iconPath}`}
-                  alt={r.title}
-                  loading="lazy"
-                  decoding="async"
-                />
-              </figure>
-              <div className="route-info">
-                <div className="route-kicker">{String(i+1).padStart(2,'0')}</div>
-                <h3 className="route-title">{r.title}</h3>
-                <p className="route-desc">{r.description}</p>
-                <div className="route-tags">
-                  {r.quests.slice(0,4).map((q) => (
-                    <span key={q.title} className="tag">{q.title}</span>
-                  ))}
-                  {r.quests.length > 4 && <span className="tag more">+{r.quests.length - 4}</span>}
+          {tab === 'route' && tourismRoutes.map((r, i) => (
+            <React.Fragment key={`row-route-${r.id}`}>
+              <article className={`route-row alt ${(openDetailType==='route' && openDetailId === r.id) ? 'expanded' : ''}`}>
+                <div className="route-media">
+                  <img
+                    src={`${process.env.PUBLIC_URL || ''}/assets/images/${r.iconPath}`}
+                    alt={r.title}
+                    loading="lazy"
+                    decoding="async"
+                  />
                 </div>
-                <div className="route-steps-inline">
-                  {r.quests.map((q, idx) => (
-                    <span key={q.title+idx} className="step">
-                      <i className={`dot ${q.status}`} />
-                      {q.title}
-                    </span>
-                  ))}
+                <div className="route-info">
+                  <div className="route-kicker">{String(i+1).padStart(2,'0')}</div>
+                  <h3 className="route-title">{r.title}</h3>
+                  <p className="route-desc">{r.description}</p>
+                  <div className="route-steps-inline">
+                    {r.quests.map((q, idx) => (
+                      <span key={q.title+idx} className="step">
+                        <i className={`dot ${q.status}`} />
+                        {q.title}
+                      </span>
+                    ))}
+                  </div>
+                  <div className="route-actions">
+                    <button type="button" className="btn video" onClick={() => goDetail('route', r.id)}>디테일 보기</button>
+                  </div>
                 </div>
-                <div className="route-actions">
-                  <button type="button" className="btn video" onClick={() => openVideo(r.id)}>Details..</button>
+              </article>
+              {(openDetailType==='route' && openDetailId === r.id) && (
+                <section id={`detail-route-${r.id}`} className="route-detail contained">
+                  <div className="route-detail__inner">
+                    <div className="route-detail__grid">
+                      <div className="detail-media">
+                        {getFirstReel('route', r.id) ? (
+                          <iframe
+                            src={`${getFirstReel('route', r.id).replace(/\/$/, '')}/embed`}
+                            title={`${r.title} - Instagram Reel`}
+                            allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
+                            allowFullScreen
+                            loading="lazy"
+                          ></iframe>
+                        ) : (
+                          <img
+                            src={`${process.env.PUBLIC_URL || ''}/assets/images/${r.iconPath}`}
+                            alt={r.title}
+                            loading="lazy"
+                            decoding="async"
+                          />
+                        )}
+                      </div>
+                      <div className="detail-body">
+                        <header className="route-detail__head">
+                          <h2 className="rd-title">{r.title}</h2>
+                          <p className="rd-desc">{r.description}</p>
+                        </header>
+                        <ul className="rd-list">
+                          {r.quests.map((q) => (
+                            <li key={q.title}>
+                              <span className={`rd-dot ${q.status}`} />
+                              <strong>{q.title}</strong>
+                              <span className="sep">—</span>
+                              <span className="sub">{q.subtitle}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </section>
+              )}
+            </React.Fragment>
+          ))}
+          {tab === 'exp' && experiences.map((exp, i) => (
+            <React.Fragment key={`row-exp-${exp.id}`}>
+              <article className={`route-row alt ${(openDetailType==='exp' && openDetailId === exp.id) ? 'expanded' : ''}`}>
+                <div className="route-media">
+                  {exp.image ? (
+                    <img
+                      src={exp.image}
+                      alt={exp.title}
+                      loading="lazy"
+                      decoding="async"
+                    />
+                  ) : (
+                    <div style={{width:'100%',height:'100%',background:'#eee'}} />
+                  )}
                 </div>
-              </div>
-            </article>
+                <div className="route-info">
+                  <div className="route-kicker">{String(i+1).padStart(2,'0')}</div>
+                  <h3 className="route-title">{exp.title}</h3>
+                  <p className="route-desc">{exp.description}</p>
+                  {exp.tags && exp.tags.length > 0 && (
+                    <div className="route-tags">
+                      {exp.tags.map((tag, idx) => (
+                        <span key={tag+idx} className="tag">{tag}</span>
+                      ))}
+                    </div>
+                  )}
+                  <div className="route-actions">
+                    <button type="button" className="btn video" onClick={() => goDetail('exp', exp.id)}>디테일 보기</button>
+                  </div>
+                </div>
+              </article>
+              {(openDetailType==='exp' && openDetailId === exp.id) && (
+                <section id={`detail-exp-${exp.id}`} className="route-detail contained">
+                  <div className="route-detail__inner">
+                    <div className="route-detail__grid">
+                      <div className="detail-media">
+                        {instagramByType?.exp?.[exp.id]?.[0] ? (
+                          <iframe
+                            src={`${instagramByType.exp[exp.id][0].replace(/\/$/, '')}/embed`}
+                            title={`${exp.title} - Instagram Reel`}
+                            allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
+                            allowFullScreen
+                            loading="lazy"
+                          ></iframe>
+                        ) : exp.detailImage ? (
+                          <img
+                            src={exp.detailImage}
+                            alt={exp.title}
+                            loading="lazy"
+                            decoding="async"
+                          />
+                        ) : exp.image ? (
+                          <img
+                            src={exp.image}
+                            alt={exp.title}
+                            loading="lazy"
+                            decoding="async"
+                          />
+                        ) : (
+                          <div style={{width:'100%',height:'100%',background:'#eee'}} />
+                        )}
+                      </div>
+                      <div className="detail-body">
+                        <header className="route-detail__head">
+                          <h2 className="rd-title">{exp.title}</h2>
+                          <p className="rd-desc">{exp.description}</p>
+                        </header>
+                        {exp.detailList && exp.detailList.length > 0 && (
+                          <ul className="rd-list">
+                            {exp.detailList.map((item, idx) => (
+                              <li key={item.title||idx}>
+                                <span className="rd-dot" />
+                                <strong>{item.title}</strong>
+                                {item.subtitle && (<><span className="sep">—</span><span className="sub">{item.subtitle}</span></>)}
+                              </li>
+                            ))}
+                          </ul>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                </section>
+              )}
+            </React.Fragment>
+          ))}
+          {tab === 'place' && places.map((place, i) => (
+            <React.Fragment key={`row-place-${place.id}`}>
+              <article className={`route-row alt ${(openDetailType==='place' && openDetailId === place.id) ? 'expanded' : ''}`}>
+                <div className="route-media">
+                  {place.image ? (
+                    <img
+                      src={place.image}
+                      alt={place.title}
+                      loading="lazy"
+                      decoding="async"
+                    />
+                  ) : (
+                    <div style={{width:'100%',height:'100%',background:'#eee'}} />
+                  )}
+                </div>
+                <div className="route-info">
+                  <div className="route-kicker">{String(i+1).padStart(2,'0')}</div>
+                  <h3 className="route-title">{place.title}</h3>
+                  <p className="route-desc">{place.description}</p>
+                  {place.tags && place.tags.length > 0 && (
+                    <div className="route-tags">
+                      {place.tags.map((tag, idx) => (
+                        <span key={tag+idx} className="tag">{tag}</span>
+                      ))}
+                    </div>
+                  )}
+                  <div className="route-actions">
+                    <button type="button" className="btn video" onClick={() => goDetail('place', place.id)}>디테일 보기</button>
+                  </div>
+                </div>
+              </article>
+              {(openDetailType==='place' && openDetailId === place.id) && (
+                <section id={`detail-place-${place.id}`} className="route-detail contained">
+                  <div className="route-detail__inner">
+                    <div className="route-detail__grid">
+                      <div className="detail-media">
+                        {instagramByType?.place?.[place.id]?.[0] ? (
+                          <iframe
+                            src={`${instagramByType.place[place.id][0].replace(/\/$/, '')}/embed`}
+                            title={`${place.title} - Instagram Reel`}
+                            allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
+                            allowFullScreen
+                            loading="lazy"
+                          ></iframe>
+                        ) : place.detailImage ? (
+                          <img
+                            src={place.detailImage}
+                            alt={place.title}
+                            loading="lazy"
+                            decoding="async"
+                          />
+                        ) : place.image ? (
+                          <img
+                            src={place.image}
+                            alt={place.title}
+                            loading="lazy"
+                            decoding="async"
+                          />
+                        ) : (
+                          <div style={{width:'100%',height:'100%',background:'#eee'}} />
+                        )}
+                      </div>
+                      <div className="detail-body">
+                        <header className="route-detail__head">
+                          <h2 className="rd-title">{place.title}</h2>
+                          <p className="rd-desc">{place.description}</p>
+                        </header>
+                        {place.detailList && place.detailList.length > 0 && (
+                          <ul className="rd-list">
+                            {place.detailList.map((item, idx) => (
+                              <li key={item.title||idx}>
+                                <span className="rd-dot" />
+                                <strong>{item.title}</strong>
+                                {item.subtitle && (<><span className="sep">—</span><span className="sub">{item.subtitle}</span></>)}
+                              </li>
+                            ))}
+                          </ul>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                </section>
+              )}
+            </React.Fragment>
           ))}
         </div>
       </section>
 
-      {/* 루트별 간단 상세 (타이포 + 라인 리스트) */}
-      {tourismRoutes.map((r, i) => (
-        <section id={`route-${r.id}`} key={`sec-${r.id}`} className={`landing-section route-detail ${i % 2 === 1 ? 'alt' : ''}`}>
-          <div className="route-detail__inner">
-            <header className="route-detail__head">
-              <h2 className="rd-title">{r.title}</h2>
-              <p className="rd-desc">{r.description}</p>
-            </header>
-            <ul className="rd-list">
-              {r.quests.map((q) => (
-                <li key={q.title}>
-                  <span className={`rd-dot ${q.status}`} />
-                  <strong>{q.title}</strong>
-                  <span className="sep">—</span>
-                  <span className="sub">{q.subtitle}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </section>
-      ))}
 
       {/* AI 보조: 후순위 & 베타 표기 */}
       <section id="ai-planner" className="landing-section ai glass">
