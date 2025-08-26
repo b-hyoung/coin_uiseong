@@ -18,14 +18,14 @@ const DEFAULT_TOURISM_ROUTES = [
     {
     id: 'historic-churches',
     title: '의성 100년 교회 역사 탐방',
-    description: '광복과 6.25의 흔적을 간직한 의성의 오래된 교회를 찾아가는 여정',
+    description: '경북 삼일운동의 시작 의성에서의 기독교 성지순례 ',
     iconBgClass: 'icon-circle red',
     iconPath: 'uiseong_samsancher.png',
     quests: [
-      { title: '삼산교회', subtitle: '100년 넘은 의성 최초의 교회 탐방', status: 'ongoing' },
-      { title: '안평교회', subtitle: '6.25 전쟁 당시 피난민을 품은 장소', status: 'locked' },
-      { title: '비안교회', subtitle: '광복 후 의성 지역 신앙 공동체의 중심', status: 'locked' },
-      { title: '주기철 목사님 기념관', subtitle: '교회들의 역사 사진을 업로드하고 스토리를 공유하기', status: 'locked' },
+      { title: '비봉교회', subtitle: '100년 넘은 의성 최초의 교회 탐방', status: 'ongoing' },
+      { title: '대사교회', subtitle: '삼일절 참여한 교회', status: 'locked' },
+      { title: '구천교회', subtitle: '옛 본당 건물이 의성군 문화유산 제49호로 지정된 문화유산', status: 'locked' },
+      { title: '주기철 목사님 수난 기념관', subtitle: '일제강점기 신앙의 자유를 지키다 순교한 주기철 목사의 뜻을 기리는 기념관.', status: 'locked' },
     ]
   },
   // {
@@ -56,8 +56,10 @@ const DEFAULT_TOURISM_ROUTES = [
 
 ];
 
+
+
 function HeroPageB({ tourismRoutes = DEFAULT_TOURISM_ROUTES, experiences = [], places = [], onSelectRoute, instagramReels = [], youtubeMap = {}, instagramByType = { route:{}, exp:{}, place:{} } }) {
-  const [theme, setTheme] = useState('neon'); // 'default' | 'modern' | 'neon' | 'pastel' | 'ocean' | 'retro'
+  const [theme] = useState('neon');
 
   // Single YouTube embed state and handlers
   const [ytOpen, setYtOpen] = useState(false);
@@ -124,14 +126,6 @@ function HeroPageB({ tourismRoutes = DEFAULT_TOURISM_ROUTES, experiences = [], p
 
   return (
     <div className={`landing-root theme-${theme}`}>
-      <div className="theme-switcher">
-        <button className={`ts-btn ${theme==='default'?'on':''}`} onClick={()=>setTheme('default')}>Default</button>
-        <button className={`ts-btn ${theme==='modern'?'on':''}`} onClick={()=>setTheme('modern')}>Modern</button>
-        <button className={`ts-btn ${theme==='neon'?'on':''}`} onClick={()=>setTheme('neon')}>Neon</button>
-        <button className={`ts-btn ${theme==='pastel'?'on':''}`} onClick={()=>setTheme('pastel')}>Pastel</button>
-        <button className={`ts-btn ${theme==='ocean'?'on':''}`} onClick={()=>setTheme('ocean')}>Ocean</button>
-        <button className={`ts-btn ${theme==='retro'?'on':''}`} onClick={()=>setTheme('retro')}>Retro</button>
-      </div>
       {/* HERO */}
       <section className="landing-hero">
         <div className="landing-hero__inner">
@@ -148,9 +142,9 @@ function HeroPageB({ tourismRoutes = DEFAULT_TOURISM_ROUTES, experiences = [], p
       <section id="routes" className="landing-section">
         <div className="landing-section__head">
           <h2>
-            {tab==='route' && '추천 루트 — 보기 전용'}
-            {tab==='exp' && '체험 프로그램 — 보기 전용'}
-            {tab==='place' && '카페 · 식당 — 보기 전용'}
+            {tab==='route' && '추천 루트'}
+            {tab==='exp' && '체험 프로그램'}
+            {tab==='place' && '카페 · 식당'}
           </h2>
           <div className="content-tabs">
             <button type="button" className={`tab-btn ${tab==='route'?'on':''}`} onClick={()=>setTab('route')}>루트</button>
@@ -184,7 +178,12 @@ function HeroPageB({ tourismRoutes = DEFAULT_TOURISM_ROUTES, experiences = [], p
                     ))}
                   </div>
                   <div className="route-actions">
-                    <button type="button" className="btn video" onClick={() => goDetail('route', r.id)}>디테일 보기</button>
+                    <button
+                      type="button"
+                      className="btn video"
+                      title="인스타 릴스 영상으로 보기"
+                      onClick={() => goDetail('route', r.id)}
+                    >▶ 영상을 통해 미리 여행해보기</button>
                   </div>
                 </div>
               </article>
@@ -259,7 +258,12 @@ function HeroPageB({ tourismRoutes = DEFAULT_TOURISM_ROUTES, experiences = [], p
                     </div>
                   )}
                   <div className="route-actions">
-                    <button type="button" className="btn video" onClick={() => goDetail('exp', exp.id)}>디테일 보기</button>
+                    <button
+                      type="button"
+                      className="btn video"
+                      title="인스타 릴스 영상으로 보기"
+                      onClick={() => goDetail('exp', exp.id)}
+                    >▶ 영상을 통해 미리 여행해보기</button>
                   </div>
                 </div>
               </article>
@@ -344,7 +348,12 @@ function HeroPageB({ tourismRoutes = DEFAULT_TOURISM_ROUTES, experiences = [], p
                     </div>
                   )}
                   <div className="route-actions">
-                    <button type="button" className="btn video" onClick={() => goDetail('place', place.id)}>디테일 보기</button>
+                    <button
+                      type="button"
+                      className="btn video"
+                      title="인스타 릴스 영상으로 보기"
+                      onClick={() => goDetail('place', place.id)}
+                    >▶ 영상을 통해 미리 여행해보기</button>
                   </div>
                 </div>
               </article>
