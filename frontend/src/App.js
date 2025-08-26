@@ -8,8 +8,8 @@ import HeroPageB from './page/HeroPageB/HeroPageB';
 const experienceData = [
   {
     id: 'apple-picking',              // ← 이 id로 릴스를 매칭합니다
-    title: '사과 따기 체험',
-    image: '/assets/images/uiseong_mak.jpeg',   // 카드 썸네일 (선택)
+    title: '막걸리 만들기 체험c',
+    image: process.env.PUBLIC_URL+'/assets/images/uiseong_mak.jpeg',   // 카드 썸네일 (선택)
     description: '막걸리만들기',
     detailImage: '/assets/images/uiseong_mak.jpeg', // 릴스 없으면 대체 이미지 (선택)
     detailList: [
