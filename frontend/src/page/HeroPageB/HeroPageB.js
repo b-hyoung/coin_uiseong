@@ -3,7 +3,7 @@ import './HeroPageB.css'
 const DEFAULT_TOURISM_ROUTES = [
   {
     id: 'jomunguk',
-    title: '조문국 역사 탐방',
+    title: '천년 역사 탐방',
     description: '의성역에서 시작하는 천년 여행, 조문국의 비밀을 향해',
     iconBgClass: 'icon-circle light-blue',
     iconPath: 'uiseong_video_qr.png',
