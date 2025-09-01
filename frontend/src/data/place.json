@@ -1,0 +1,32 @@
+[
+  {
+    "id": "garosu-cafe",                     
+    "title": "달라스버거",                   
+    "description": "전국에서도 드문, 사라져가는 레트로 햄버거의 원형 — 유재석님을 비롯한 연예인도 다녀간 달라스버거",  
+    "image": "/assets/images/uiseong_dalas.png",   
+    "detailImage": "/assets/images/uiseong_dalas.png", 
+    "tags": ["햄버거", "레트로","맛집","유재석님 다녀감" ,"포장만 가능"],                 
+    "reels": [                                  
+      { "url": "https://www.instagram.com/p/DN-tYfckwWT/", "caption": "달라스 버거 JMT" }
+    ],
+    "detailList": [                       
+      { "title": "추천 메뉴", "subtitle": "불고기버거 셋트" },
+      { "title": "영업시간", "subtitle": "10:00 ~ 20:00" }
+    ]
+  },
+  {
+    "id": "gwangjacaffe",
+    "title": "광자 카페",
+    "description": "3000원대 간식맛집 & 햄버거셋트",
+    "image": "/assets/images/uiseong_gwangja.png",
+    "detailImage": "/assets/images/uiseong_gwangja.png",
+    "tags": ["식당", "현지맛집","개발자가 다녀온 맛집"],
+    "reels": [
+      { "url": "https://www.instagram.com/p/DN7YZ9jE7e6/", "caption": "간식 맛집" }
+    ],
+    "detailList": [
+      { "title": "대표 메뉴", "subtitle": "닭꼬치 & 햄버거셋트" },
+      { "title": "위치", "subtitle": "안계마을에서 3분" }
+    ]
+  }
+]

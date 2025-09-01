@@ -1,0 +1,35 @@
+[
+  {
+    "id": "jomunguk",
+    "title": "천년 역사 탐방",
+    "description": "의성역에서 시작하는 천년 여행, 조문국의 비밀을 향해",
+    "iconBgClass": "icon-circle light-blue",
+    "iconPath": "uiseong_video_qr.png",
+    "reels": [
+    { "url": "https://www.instagram.com/p/DNx0E4b5vlK/" }
+  ],
+  "quests": [
+    { "title": "의성역", "subtitle": "역광장 포토존 인증샷 미션", "status": "completed" },
+    { "title": "조문국", "subtitle": "가장 높지만 낮은 길 미션", "status": "ongoing" },
+    { "title": "고운사", "subtitle": "고운사 상징물 3개 업로드 미션", "status": "locked" },
+    { "title": "사천마을", "subtitle": "마을 벽화 속 동물과 사진 찍기 미션", "status": "locked" },
+    { "title": "여행의 마지막 페이지", "subtitle": "모든 퀘스트를 완료하고 최종 보상 획득!", "status": "locked" }
+  ]
+},
+{
+  "id": "historic-churches",
+  "title": "의성 100년 교회 역사 탐방",
+  "description": "경북 삼일운동의 시작 의성에서의 기독교 성지순례",
+  "iconBgClass": "icon-circle red",
+  "iconPath": "uiseong_samsancher.png",
+  "reels": [
+  { "url": "https://www.instagram.com/p/DN07Fk85qa7/" }
+  ],
+    "quests": [
+      { "title": "비봉교회", "subtitle": "100년 넘은 의성 최초의 교회 탐방", "status": "ongoing" },
+      { "title": "대사교회", "subtitle": "삼일절 참여한 교회", "status": "locked" },
+      { "title": "구천교회", "subtitle": "옛 본당 건물이 의성군 문화유산 제49호로 지정된 문화유산", "status": "locked" },
+      { "title": "주기철 목사님 수난 기념관", "subtitle": "일제강점기 신앙의 자유를 지키다 순교한 주기철 목사의 뜻을 기리는 기념관.", "status": "locked" }
+    ]
+  }
+]

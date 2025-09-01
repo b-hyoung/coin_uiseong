@@ -1,0 +1,29 @@
+[
+  {
+    "id": "makgeolli-experience",
+    "title": "막걸리 만들기 체험",
+    "image":"/assets/images/uiseong_mak.jpeg",
+    "description": "막걸리만들기",
+    "detailImage": "/assets/images/uiseong_mak.jpeg",
+    "reels": [
+    { "url": "https://www.instagram.com/p/DN0N8pVZlAY/" }
+  ],
+    "detailList": [
+      { "title": "예약", "subtitle": "사전 예약 추천" },
+      { "title": "소요시간", "subtitle": "약 60분" }
+    ],
+    "tags": ["체험", "막걸리","으른"]
+  },
+  {
+    "id": "apple-picking",
+    "title": "사과 따기 체험",
+    "image": "/assets/images/uiseong_jadu.jpg",
+    "description": "사과따기",
+    "detailImage": "/assets/images/uiseong_jadu.jpg",
+    "detailList": [
+      { "title": "예약", "subtitle": "사전 예약 추천" },
+      { "title": "소요시간", "subtitle": "약 30분" }
+    ],
+    "tags": ["가족", "과일"]
+  }
+]
